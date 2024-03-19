@@ -26,7 +26,6 @@
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     });
-    console.log(res);
     if (!res.ok) return new Error("Error submitting");
     await populateTodo();
   }

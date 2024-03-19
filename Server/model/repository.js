@@ -47,3 +47,13 @@ export async function deleteData(id) {
     console.error(error.message);
   }
 }
+
+export async function updateTaskCompletion(id, data) {
+  try {
+    const query = `UPDATE todos SET completed = $1 WHERE id = $2`;
+    const values = [data.completed, id];
+    await client.query(query, values);
+  } catch (error) {
+    console.log(error.message);
+  }
+}
