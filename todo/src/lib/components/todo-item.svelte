@@ -8,32 +8,57 @@
   export let onDelete;
   export let onSubmit;
 
-  // $: fommattedDAte = date.split("T")[0];
   async function handleSubmit(event) {
-    const data = Object.fromEntries(new FormData(event.target));
-    console.log(data);
-    const response = await fetch(`http://localhost:3000/task/${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
+    try {
+      const data = Object.fromEntries(new FormData(event.target));
+      console.log(data);
+      const response = await fetch(`http://localhost:3000/task/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
 
-      body: JSON.stringify(data),
-    });
-    if (onSubmit) onSubmit();
+        body: JSON.stringify(data),
+      });
+      if (!response.ok) return new Error("Error submittig data");
+      if (onSubmit) onSubmit();
+    } catch (error) {
+      console.log(error.message);
+    }
   }
 
   async function handleDeleteClick() {
-    const response = await fetch(`http://localhost:3000/task/${id}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    if (onDelete) onDelete();
+    try {
+      const response = await fetch(`http://localhost:3000/task/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (!response.ok) throw new Error("Error deleting data ");
+      if (onDelete) onDelete();
+    } catch (error) {
+      console.log(error.message);
+    }
   }
 
-  $: isChecked = completed === "true";
+  async function handleComplete(event) {
+    try {
+      const isChecked = event.target.checked;
+      const data = { completed: isChecked };
+      const response = await fetch(`http://localhost:3000/task/done/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+      console.log(response);
+      if (!response.ok) throw new Error("Error updating todo done ");
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
 </script>
 
 <div class="todo">
@@ -42,8 +67,8 @@
     <input
       type="checkbox"
       name="completed"
-      value="true"
-      bind:checked={isChecked}
+      bind:checked={completed}
+      on:change={handleComplete}
     />
     <input type="text" name="name" value={name} />
     <input type="date" name="date" value={date ? date.split("T")[0] : null} />
