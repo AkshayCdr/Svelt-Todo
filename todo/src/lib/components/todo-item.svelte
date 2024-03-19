@@ -23,7 +23,7 @@
     if (onSubmit) onSubmit();
   }
 
-  async function handleDeleteClick(event) {
+  async function handleDeleteClick() {
     const response = await fetch(`http://localhost:3000/task/${id}`, {
       method: "DELETE",
       headers: {
@@ -32,12 +32,19 @@
     });
     if (onDelete) onDelete();
   }
+
+  $: isChecked = completed === "true";
 </script>
 
 <div class="todo">
   <form on:submit|preventDefault={handleSubmit}>
     <input type="text" name="priority" value={priority} />
-    <input type="checkbox" name="completed" value="true" checked />
+    <input
+      type="checkbox"
+      name="completed"
+      value="true"
+      bind:checked={isChecked}
+    />
     <input type="text" name="name" value={name} />
     <input type="date" name="date" value={date ? date.split("T")[0] : null} />
     <textarea name="description" cols="30" rows="10" value={description}
