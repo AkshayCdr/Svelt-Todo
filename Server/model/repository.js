@@ -24,18 +24,19 @@ export async function setData(task) {
 
 export async function updateData(id, data) {
   try {
+    const dateParameter = data.date ? data.date : null;
     const query = ` UPDATE todos SET name = $1, priority = $2, description = $3, date = $4, completed = $5 WHERE id = $6`;
     const values = [
       data.name,
       data.priority,
       data.description,
-      data.date,
+      dateParameter,
       data.completed,
       id,
     ];
     await client.query(query, values);
   } catch (error) {
-    console.error(error.message);
+    console.error("Cannot excecute query", error.message);
   }
 }
 

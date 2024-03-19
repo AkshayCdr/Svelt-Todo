@@ -59,11 +59,19 @@
       console.log(error.message);
     }
   }
+
+  const priorityOptions = ["low", "mid", "high"];
 </script>
 
 <div class="todo">
   <form on:submit|preventDefault={handleSubmit}>
-    <input type="text" name="priority" value={priority} />
+    <!-- <input type="text" name="priority" value={priority} />
+     -->
+    <select name="priority" bind:value={priority}>
+      {#each priorityOptions as option}
+        <option value={option}>{option}</option>
+      {/each}
+    </select>
     <input
       type="checkbox"
       name="completed"
