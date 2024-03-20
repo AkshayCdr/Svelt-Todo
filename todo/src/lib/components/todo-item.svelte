@@ -96,7 +96,13 @@
         bind:checked={completed}
         on:change={handleComplete}
       />
-      <input type="text" name="name" value={name} class="task-name" />
+      <input
+        type="text"
+        name="name"
+        value={name}
+        class="task-name"
+        style="text-decoration: {completed ? 'line-through' : 'none'};"
+      />
     </div>
     <div class="addons {isVisible ? '' : 'hide'}">
       <input
@@ -135,7 +141,8 @@
   }
 
   .todo:hover {
-    box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
+    /* box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px; */
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 50px;
   }
 
   .todo .main {
