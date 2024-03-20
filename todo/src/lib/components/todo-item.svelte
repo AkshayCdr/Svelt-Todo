@@ -10,6 +10,14 @@
   export let onDelete;
   export let onSubmit;
 
+  let colorMap = {
+    high: "red",
+    mid: "yellow",
+    low: "green",
+  };
+
+  $: colorpick = colorMap[priority];
+
   let isVisible = false;
   async function handleSubmit(event) {
     try {
@@ -70,7 +78,12 @@
 <div class="todo {completed ? 'blur' : ''}">
   <form on:submit|preventDefault={handleSubmit}>
     <div class="main" on:click|stopPropagation={toggleAddon}>
-      <select name="priority" bind:value={priority} class="task-priority">
+      <select
+        name="priority"
+        bind:value={priority}
+        class="task-priority"
+        style="color: {colorpick};"
+      >
         <!-- <option value=""></option> -->
         {#each priorityOptions as option}
           <option value={option}>{option}</option>
@@ -138,7 +151,7 @@
     font-size: 18px;
     border: none;
     background: transparent;
-    color: wheat;
+    /* color: "{colorpick}"; */
   }
 
   .todo .task-checkbox {
