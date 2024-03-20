@@ -1,4 +1,6 @@
 <script>
+  import moment from "moment";
+
   export let id;
   export let name;
   export let priority;
@@ -7,33 +9,11 @@
   export let description;
   export let onDelete;
   export let onSubmit;
+
   let isVisible = false;
-
-  function updateDate(data) {
-    // console.log(data);
-    console.log("inside");
-    const newDate = new Date(data.date).toUTCString();
-    // console.log(newDate.toLocaleDateString());
-    // console.log(newDate);
-    // console.log(newDate.getTime());
-    // console.log(newDate.toLocaleDateString());
-    // const updatedData = data.map()
-    const updatedData = Object.fromEntries(
-      Object.entries(data).map(([key, value]) => {
-        return key === "date" ? [key, newDate] : [key, value];
-      })
-    );
-
-    console.log(updatedData);
-
-    console.log("oustside");
-    return updatedData;
-  }
-
   async function handleSubmit(event) {
     try {
       const data = Object.fromEntries(new FormData(event.target));
-      // const updatedData = updateDate(data);
       const response = await fetch(`http://localhost:3000/task/${id}`, {
         method: "PUT",
         headers: {
@@ -74,7 +54,6 @@
         },
         body: JSON.stringify(data),
       });
-      console.log(response);
       if (!response.ok) throw new Error("Error updating todo done ");
     } catch (error) {
       console.log(error.message);
@@ -88,7 +67,7 @@
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
-<div class="todo">
+<div class="todo {completed ? 'blur' : ''}">
   <form on:submit|preventDefault={handleSubmit}>
     <div class="main" on:click|stopPropagation={toggleAddon}>
       <select name="priority" bind:value={priority} class="task-priority">
@@ -111,9 +90,9 @@
         type="date"
         class="task-date"
         name="date"
-        value={date ? date.split("T")[0] : null}
+        value={date ? moment(date).format("YYYY-MM-DD") : null}
+        min={moment().format("YYYY-MM-DD")}
       />
-      {date}
       <textarea
         name="description"
         class="task-description"
@@ -172,10 +151,6 @@
     border-radius: 0.15em;
     transform: translateY(-0.075em);
   }
-
-  /* input[type="checkbox"] {
-    outline: 3px solid black;
-  } */
 
   .todo .task-name {
     min-height: 30px;
@@ -239,5 +214,9 @@
 
   .hide {
     display: none !important;
+  }
+
+  .blur {
+    filter: blur(1px);
   }
 </style>
