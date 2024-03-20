@@ -61,8 +61,11 @@
     padding: 20px 20px;
     border: 1px solid black;
     /* background-image: linear-gradient(to right, #d7d2cc 0%, #304352 100%); */
-    background-color: rgb(91, 5, 69);
+    /* background-color: rgb(91, 5, 69); */
     border-radius: 13px;
+    box-shadow:
+      rgba(0, 0, 0, 0.25) 0px 14px 28px,
+      rgba(0, 0, 0, 0.22) 0px 10px 10px;
   }
 
   .input {

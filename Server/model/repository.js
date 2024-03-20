@@ -4,7 +4,7 @@ let client = await pool.connect();
 
 export async function getData() {
   try {
-    const query = "SELECT * FROM todos";
+    const query = "SELECT * FROM todos ORDER by id ASC";
     const result = await client.query(query);
     return result.rows;
   } catch (error) {
@@ -25,6 +25,7 @@ export async function setData(task) {
 export async function updateData(id, data) {
   try {
     const dateParameter = data.date ? data.date : null;
+    console.log(dateParameter);
     const query = ` UPDATE todos SET name = $1, priority = $2, description = $3, date = $4, completed = $5 WHERE id = $6`;
     const values = [
       data.name,

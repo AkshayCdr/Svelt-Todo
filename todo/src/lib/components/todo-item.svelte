@@ -7,17 +7,38 @@
   export let description;
   export let onDelete;
   export let onSubmit;
+  let isVisible = false;
+
+  function updateDate(data) {
+    // console.log(data);
+    console.log("inside");
+    const newDate = new Date(data.date).toUTCString();
+    // console.log(newDate.toLocaleDateString());
+    // console.log(newDate);
+    // console.log(newDate.getTime());
+    // console.log(newDate.toLocaleDateString());
+    // const updatedData = data.map()
+    const updatedData = Object.fromEntries(
+      Object.entries(data).map(([key, value]) => {
+        return key === "date" ? [key, newDate] : [key, value];
+      })
+    );
+
+    console.log(updatedData);
+
+    console.log("oustside");
+    return updatedData;
+  }
 
   async function handleSubmit(event) {
     try {
       const data = Object.fromEntries(new FormData(event.target));
-      console.log(data);
+      // const updatedData = updateDate(data);
       const response = await fetch(`http://localhost:3000/task/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
-
         body: JSON.stringify(data),
       });
       if (!response.ok) return new Error("Error submittig data");
@@ -59,15 +80,19 @@
       console.log(error.message);
     }
   }
-
+  function toggleAddon(event) {
+    if (event.target === event.currentTarget) isVisible = !isVisible;
+  }
   const priorityOptions = ["low", "mid", "high"];
 </script>
 
+<!-- svelte-ignore a11y-click-events-have-key-events -->
+<!-- svelte-ignore a11y-no-static-element-interactions -->
 <div class="todo">
   <form on:submit|preventDefault={handleSubmit}>
-    <div class="main">
+    <div class="main" on:click|stopPropagation={toggleAddon}>
       <select name="priority" bind:value={priority} class="task-priority">
-        <option value=""></option>
+        <!-- <option value=""></option> -->
         {#each priorityOptions as option}
           <option value={option}>{option}</option>
         {/each}
@@ -81,13 +106,14 @@
       />
       <input type="text" name="name" value={name} class="task-name" />
     </div>
-    <div class="addons">
+    <div class="addons {isVisible ? '' : 'hide'}">
       <input
         type="date"
         class="task-date"
         name="date"
         value={date ? date.split("T")[0] : null}
       />
+      {date}
       <textarea
         name="description"
         class="task-description"
@@ -108,11 +134,12 @@
 <style>
   .todo {
     /* border: 1px solid black; */
-    margin: 10px 10px;
+    margin: 10px auto;
     padding: 5px 5px;
     border-radius: 20px;
     background-color: teal;
     box-sizing: border-box;
+    max-width: 80%;
   }
 
   .todo:hover {
@@ -123,6 +150,7 @@
     margin: 10px 10px;
     display: flex;
     align-items: center;
+    max-height: 20px;
   }
 
   .todo .task-priority {
@@ -175,15 +203,16 @@
     border: 5px solid darkblue;
     border-radius: 10px;
     background: transparent;
-    font-size: 18px;
+    font-size: 15px;
   }
 
   .todo .addons .task-description {
-    max-height: 150px;
+    max-height: 100px;
+    padding: 5px 5px;
     border: 5px solid yellow;
     border-radius: 10px;
     background: transparent;
-    font-size: 18px;
+    font-size: 15px;
   }
 
   .todo .addons .buttons {
@@ -194,7 +223,7 @@
   .todo .addons .buttons .btn {
     width: 90px;
     height: 40px;
-    font-size: 17px;
+    font-size: 15px;
     border-radius: 10px;
   }
 

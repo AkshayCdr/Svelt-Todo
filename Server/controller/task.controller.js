@@ -6,10 +6,23 @@ import {
   updateTaskCompletion,
 } from "../model/repository.js";
 
+function updateDate(data) {
+  const updatedData = data.map((task) => {
+    const newDate = task.date ? new Date(task.date).toLocaleDateString() : "";
+    return Object.fromEntries(
+      Object.entries(task).map(([key, value]) => {
+        return key === "date" ? [key, newDate] : [key, value];
+      })
+    );
+  });
+  return updatedData;
+}
+
 export async function getTodo(req, res) {
   try {
     const dataFromDb = await getData();
-    res.send(JSON.stringify(dataFromDb));
+    const updatedData = updateDate(dataFromDb);
+    res.send(JSON.stringify(updatedData));
   } catch (error) {
     console.log(error.message);
     res.status(500).json({ message: "server error" });
