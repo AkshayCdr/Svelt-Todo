@@ -19,7 +19,7 @@
 
   async function handleSubmit(event) {
     const data = Object.fromEntries(new FormData(event.target));
-    if (!data.task) return alert("Enter name");
+    if (!data.name) return alert("Enter name");
     const res = await fetch("http://localhost:3000/task", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -39,9 +39,9 @@
   </div>
 
   <div>
-    {#each todos as todo (todo.id)}
+    {#each todos as todo (todo._id)}
       <TodoItem
-        id={todo.id}
+        id={todo._id}
         priority={todo.priority}
         name={todo.name}
         description={todo.description}

@@ -9,7 +9,7 @@ const todosSchema = mongoose.Schema({
     type: Date,
     required: false,
   },
-  prioriry: {
+  priority: {
     type: String,
     required: false,
   },

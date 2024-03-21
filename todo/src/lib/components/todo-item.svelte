@@ -78,7 +78,7 @@
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <div class="todo {completed ? 'blur' : ''}">
   <form on:submit|preventDefault={handleSubmit}>
-    <div class="main" on:click|stopPropagation={toggleAddon}>
+    <div class="main">
       <select
         name="priority"
         bind:value={priority}
@@ -104,6 +104,9 @@
         class="task-name"
         style="text-decoration: {completed ? 'line-through' : 'none'};"
       />
+      <button class="task-expand" on:click|stopPropagation={toggleAddon}
+        >Expand</button
+      >
     </div>
     <div class="addons {isVisible ? '' : 'hide'}">
       <input
@@ -181,6 +184,19 @@
     margin: 0 5px;
     padding: 5px 5px;
     color: white;
+  }
+
+  .todo .main .task-expand {
+    background-color: rgb(124, 5, 150);
+    /* justify-content: right !important;
+     */
+    color: white;
+    margin-left: 60px;
+    padding: 5px;
+    font-size: 15px;
+    border-radius: 20px;
+    width: fit-content;
+    height: fit-content;
   }
 
   .todo .addons {

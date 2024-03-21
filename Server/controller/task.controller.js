@@ -6,22 +6,9 @@ import {
   updateTaskCompletion,
 } from "../model/repository.js";
 
-function updateDate(data) {
-  const updatedData = data.map((task) => {
-    const newDate = task.date ? new Date(task.date).toLocaleDateString() : "";
-    return Object.fromEntries(
-      Object.entries(task).map(([key, value]) => {
-        return key === "date" ? [key, newDate] : [key, value];
-      })
-    );
-  });
-  return updatedData;
-}
-
 export async function getTodo(req, res) {
   try {
     const dataFromDb = await getData();
-    // const updatedData = updateDate(dataFromDb);
     res.send(JSON.stringify(dataFromDb));
   } catch (error) {
     console.log(error.message);
@@ -31,9 +18,6 @@ export async function getTodo(req, res) {
 
 export async function addTodos(req, res) {
   try {
-    // const { task } = req.body;
-    // if (!task) throw new Error("Missing taskname");
-    // await setData(task);
     await setData(req.body);
     res.status(201).json({ message: "successfully created" });
   } catch (error) {
@@ -44,8 +28,8 @@ export async function addTodos(req, res) {
 
 export async function updateTodos(req, res) {
   try {
-    await updateData(req.params.id, req.body);
-    res.status(200).json({ message: "succesfully updated" });
+    const response = await updateData(req.params.id, req.body);
+    res.status(200).json({ message: "succesfully updated", data: response });
   } catch (error) {
     console.log(error.message);
     res.status(500).json({ message: "server error" });
