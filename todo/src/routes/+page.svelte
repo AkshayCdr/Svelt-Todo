@@ -33,7 +33,7 @@
 <div class="container">
   <div class="input">
     <form on:submit|preventDefault={handleSubmit}>
-      <input type="text" name="task" placeholder="add task" class="task-name" />
+      <input type="text" name="name" placeholder="add task" class="task-name" />
       <input type="submit" value="add task" class="btn btn-submit" />
     </form>
   </div>

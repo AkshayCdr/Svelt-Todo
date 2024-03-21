@@ -21,8 +21,8 @@ function updateDate(data) {
 export async function getTodo(req, res) {
   try {
     const dataFromDb = await getData();
-    const updatedData = updateDate(dataFromDb);
-    res.send(JSON.stringify(updatedData));
+    // const updatedData = updateDate(dataFromDb);
+    res.send(JSON.stringify(dataFromDb));
   } catch (error) {
     console.log(error.message);
     res.status(500).json({ message: "server error" });

@@ -1,10 +1,19 @@
 import { Todo } from "./todos.model.js";
 
-export async function getData() {}
+import db from "../dbConnection.js";
 
-export async function setData(task) {
+export async function getData() {
   try {
-    const todo = await Todo.create(task);
+    const todo = await Todo.find();
+    return todo;
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
+export async function setData(data) {
+  try {
+    const todo = await Todo.create(data);
   } catch (error) {
     console.log(error.message);
   }
