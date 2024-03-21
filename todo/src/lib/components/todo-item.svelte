@@ -19,6 +19,7 @@
   $: colorpick = colorMap[priority];
 
   let isVisible = false;
+
   async function handleSubmit(event) {
     try {
       const data = Object.fromEntries(new FormData(event.target));

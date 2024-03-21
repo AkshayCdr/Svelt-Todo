@@ -31,9 +31,10 @@ export async function getTodo(req, res) {
 
 export async function addTodos(req, res) {
   try {
-    const { task } = req.body;
-    if (!task) throw new Error("Missing taskname");
-    await setData(task);
+    // const { task } = req.body;
+    // if (!task) throw new Error("Missing taskname");
+    // await setData(task);
+    await setData(req.body);
     res.status(201).json({ message: "successfully created" });
   } catch (error) {
     console.log(error.message);
